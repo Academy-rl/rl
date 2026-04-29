@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MrXT Academy</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Orbitron',sans-serif;
+  background:radial-gradient(circle at top,#0c0c12,#050507);
+  color:white;
+  overflow-x:hidden;
+}
+
+/* TOPBAR */
+.topbar{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 22px;
+  background:rgba(10,10,15,0.6);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  z-index:999;
+}
+
+.brand{
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.btn{
+  padding:13px 28px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#1a1a25,#0f0f14);
+  color:white;
+  border:1px solid rgba(255,255,255,0.08);
+  cursor:pointer;
+  transition:0.25s;
+}
+
+.btn:hover{
+  transform:scale(1.05);
+  border-color:#4f9cff;
+}
+
+.btn-small{
+  padding:8px 14px;
+  border-radius:8px;
+  background:#111;
+  border:1px solid #333;
+  color:white;
+  cursor:pointer;
+}
+
+/* HERO (IMPROVED) */
+.hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:
+    linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.95)),
+    url('https://i.imgur.com/oH8pG5Y.png');
+  background-size:cover;
+  background-position:center;
+  padding:20px;
+}
+
+.hero-box{
+  animation:fadeIn 0.8s ease;
+}
+
+.hero h1{
+  font-size:3.5rem;
+}
+
+.hero p{
+  opacity:0.75;
+  margin-top:10px;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* PAGES */
+.page{
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:120px 20px 60px;
+  text-align:center;
+}
+
+.active{display:flex;}
+
+/* COURSES */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  width:100%;
+  max-width:900px;
+  margin-top:30px;
+}
+
+.card{
+  padding:28px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  cursor:pointer;
+  transition:0.3s;
+  font-size:1.1rem;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  border-color:#4f9cff;
+  background:rgba(79,156,255,0.08);
+}
+
+/* VIDEO */
+.video{
+  width:92%;
+  max-width:900px;
+  aspect-ratio:16/9;
+  margin:18px 0;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+iframe{width:100%;height:100%;border:none;}
+
+/* LOGIN OVERLAY IMPROVED */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+}
+
+.login-container{
+  display:flex;
+  width:720px;
+  max-width:95%;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);
+  animation:fadeIn 0.6s ease;
+}
+
+.login-left{
+  flex:1;
+  background:linear-gradient(135deg,#111,#0a0a10);
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.login-left h2{
+  font-size:2rem;
+}
+
+.login-left p{
+  opacity:0.7;
+  margin-top:10px;
+}
+
+.login-right{
+  flex:1;
+  background:#0f0f14;
+  padding:40px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#0b0b10;
+  color:white;
+  outline:none;
+}
+
+.hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">MrXT Academy 🚀</div>
+  <div class="profile">
+    <span id="user"></span>
+    <button class="btn-small hidden" id="logoutBtn" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="modal" id="modal">
+  <div class="login-container">
+    <div class="login-left">
+      <h2>MrXT Academy</h2>
+      <p>Aprende Rocket League como um pro 🚀</p>
+    </div>
+
+    <div class="login-right">
+      <h3>Login</h3>
+      <input id="name" placeholder="Nome" />
+      <input id="email" placeholder="Email" />
+      <input id="pass" type="password" placeholder="Senha" />
+      <button class="btn" onclick="login()">Entrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<section class="hero page active" id="home">
+  <div class="hero-box">
+    <h1>MrXT Academy</h1>
+    <p>Melhores cursos Rocket League</p>
+    <button class="btn" onclick="go('courses')">Cursos</button>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="page" id="courses">
+  <h1>📁 Cursos</h1>
+
+  <div class="grid">
+    <div class="card" onclick="go('freestyle')">🔥 Freestyle</div>
+    <div class="card" onclick="go('competitive')">🏆 Competitivo</div>
+    <div class="card" onclick="go('settings')">⚙️ Settings</div>
+  </div>
+
+  <button class="btn" onclick="go('home')" style="margin-top:30px">Voltar</button>
+</section>
+
+<!-- FREESTYLE -->
+<section class="page" id="freestyle">
+  <h1>Freestyle</h1>
+
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/E5iqBK5CZvM"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/G4KIlenvZZI"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/y4S51ojpH18"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/ToU7DRvK0zo"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/AM2kICHyJg4"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/q11CzB0uHN8"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/UIpBnd2iXPk"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/YYugI1ZXbgs"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/Legh4aWHI_Y"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/E22Eie966tU"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/oH_VhGzMq-Y"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/OGs4QlgQjy4"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/LmQJ6WUZVgE"></iframe></div>
+
+  <button class="btn" onclick="go('courses')">Voltar</button>
+</section>
+
+<!-- COMPETITIVE -->
+<section class="page" id="competitive">
+  <h1>Competitivo</h1>
+
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/yZNIu80j1hY"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/RwlpXG8Fs4I"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/fZkbDh6PZ94"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/f5AeEK2b_ds"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/vLZI6e6InLM"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/Gv8Zo8dTRDE"></iframe></div>
+
+  <button class="btn" onclick="go('courses')">Voltar</button>
+</section>
+
+<!-- SETTINGS -->
+<section class="page" id="settings">
+  <h1>Settings</h1>
+
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/GJR5y9hRXJ0"></iframe></div>
+  <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/mEDYlBHLu-4"></iframe></div>
+
+  <button class="btn" onclick="go('courses')">Voltar</button>
+</section>
+
+<script>
+function login(){
+  const name=document.getElementById('name').value;
+  const email=document.getElementById('email').value;
+  const pass=document.getElementById('pass').value;
+
+  if(!name||!email||!pass) return alert('Preenche tudo');
+
+  localStorage.setItem('user',name);
+  document.getElementById('modal').style.display='none';
+  update();
+}
+
+function logout(){
+  localStorage.removeItem('user');
+  location.reload();
+}
+
+function update(){
+  const user=localStorage.getItem('user');
+  if(user){
+    document.getElementById('user').innerText=user;
+    document.getElementById('logoutBtn').classList.remove('hidden');
+    document.getElementById('modal').style.display='none';
+  }
+}
+
+function go(page){
+  if(!localStorage.getItem('user')){
+    document.getElementById('modal').style.display='flex';
+    return;
+  }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+
+update();
+</script>
+
+</body>
+</html>
