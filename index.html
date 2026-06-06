@@ -37,12 +37,6 @@ body{
   letter-spacing:1px;
 }
 
-.profile{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
 .btn{
   padding:13px 28px;
   border-radius:12px;
@@ -58,15 +52,6 @@ body{
   border-color:#4f9cff;
 }
 
-.btn-small{
-  padding:8px 14px;
-  border-radius:8px;
-  background:#111;
-  border:1px solid #333;
-  color:white;
-  cursor:pointer;
-}
-
 /* HERO (IMPROVED) */
 .hero{
   height:100vh;
@@ -76,7 +61,7 @@ body{
   text-align:center;
   background:
     linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.95)),
-    url('https://i.imgur.com/oH8pG5Y.png');
+    url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600&q=80');
   background-size:cover;
   background-position:center;
   padding:20px;
@@ -151,64 +136,6 @@ body{
 }
 
 iframe{width:100%;height:100%;border:none;}
-
-/* LOGIN OVERLAY IMPROVED */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.85);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:2000;
-}
-
-.login-container{
-  display:flex;
-  width:720px;
-  max-width:95%;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.08);
-  animation:fadeIn 0.6s ease;
-}
-
-.login-left{
-  flex:1;
-  background:linear-gradient(135deg,#111,#0a0a10);
-  padding:40px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.login-left h2{
-  font-size:2rem;
-}
-
-.login-left p{
-  opacity:0.7;
-  margin-top:10px;
-}
-
-.login-right{
-  flex:1;
-  background:#0f0f14;
-  padding:40px;
-}
-
-input{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:10px;
-  border:1px solid #333;
-  background:#0b0b10;
-  color:white;
-  outline:none;
-}
-
-.hidden{display:none !important;}
 </style>
 </head>
 <body>
@@ -216,28 +143,6 @@ input{
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="brand">MrXT Academy 🚀</div>
-  <div class="profile">
-    <span id="user"></span>
-    <button class="btn-small hidden" id="logoutBtn" onclick="logout()">Logout</button>
-  </div>
-</div>
-
-<!-- LOGIN -->
-<div class="modal" id="modal">
-  <div class="login-container">
-    <div class="login-left">
-      <h2>MrXT Academy</h2>
-      <p>Aprende Rocket League como um pro 🚀</p>
-    </div>
-
-    <div class="login-right">
-      <h3>Login</h3>
-      <input id="name" placeholder="Nome" />
-      <input id="email" placeholder="Email" />
-      <input id="pass" type="password" placeholder="Senha" />
-      <button class="btn" onclick="login()">Entrar</button>
-    </div>
-  </div>
 </div>
 
 <!-- HOME -->
@@ -245,7 +150,7 @@ input{
   <div class="hero-box">
     <h1>MrXT Academy</h1>
     <p>Melhores cursos Rocket League</p>
-    <button class="btn" onclick="go('courses')">Cursos</button>
+    <button class="btn" onclick="go('courses')" style="margin-top:20px">Cursos</button>
   </div>
 </section>
 
@@ -299,7 +204,6 @@ input{
   <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/SkDUJatTI2E"></iframe></div>
   <div class="video"><iframe loading="lazy" src="https://www.youtube.com/embed/rlTMBCaezeU"></iframe></div>
 
-
   <button class="btn" onclick="go('courses')">Voltar</button>
 </section>
 
@@ -314,42 +218,10 @@ input{
 </section>
 
 <script>
-function login(){
-  const name=document.getElementById('name').value;
-  const email=document.getElementById('email').value;
-  const pass=document.getElementById('pass').value;
-
-  if(!name||!email||!pass) return alert('Preenche tudo');
-
-  localStorage.setItem('user',name);
-  document.getElementById('modal').style.display='none';
-  update();
-}
-
-function logout(){
-  localStorage.removeItem('user');
-  location.reload();
-}
-
-function update(){
-  const user=localStorage.getItem('user');
-  if(user){
-    document.getElementById('user').innerText=user;
-    document.getElementById('logoutBtn').classList.remove('hidden');
-    document.getElementById('modal').style.display='none';
-  }
-}
-
 function go(page){
-  if(!localStorage.getItem('user')){
-    document.getElementById('modal').style.display='flex';
-    return;
-  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(page).classList.add('active');
 }
-
-update();
 </script>
 
 </body>
